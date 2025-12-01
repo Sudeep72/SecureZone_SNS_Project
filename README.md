@@ -162,6 +162,28 @@ http://localhost:5000
 
 ---
 
+---
+
+## 🧪 Test Script: `test_securezone.py`
+
+This script automatically tests all major API endpoints exposed by SecureZone.  
+It sends GET/POST requests to the Flask server, prints status codes, and displays truncated JSON results for easier debugging.
+
+### **What it tests**
+- `/api/status` – full system status  
+- `/api/run_scan` – quick and deep scans  
+- `/api/alerts` – recent alerts  
+- `/api/advanced_metrics` – SSL/DNS/UEBA/protocol metrics  
+- `/api/detection_layers` – active detection layers  
+- `/api/network` – network topology graph  
+
+### **How to run**
+
+Start the server:
+```bash
+python app.py
+
+
 ## 🧩 **Notable Implementation Details**
 
 * `convert_numpy_types` ensures JSON-safe outputs
