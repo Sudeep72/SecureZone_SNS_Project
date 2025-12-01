@@ -55,8 +55,8 @@ This project includes a Flask-based REST API with a dashboard-ready backend and 
 * **Flask** – REST API for dashboard and endpoints
 * **scikit-learn** – ML models (IsolationForest, RandomForest, MLPClassifier), DBSCAN
 * **NumPy, pandas** – analytics & dataset handling
-* **NetworkX** – network topology & SDN modeling
-* **Collections (deque)** – fast caching and histories
+* **NetworkX** – SDN modeling & topology graphs
+* **Collections (deque)** – fast event history and caching
 
 ---
 
@@ -65,13 +65,45 @@ This project includes a Flask-based REST API with a dashboard-ready backend and 
 ```
 securezone/
 │── app.py                   # Main Flask app + system initialization
-|── test_securezone.py       # Test every endpoints
+│── test_securezone.py       # Script to test API endpoints
 │── templates/
-│     └── dashboard.html     # Dashboard frontend (if used)
-│── static/                  
-│── README.md                # This file
+│     └── dashboard.html     # Dashboard frontend
+│── static/                  # Optional CSS/JS
+│── README.md                # Documentation
 │── requirements.txt         # Dependencies
 ```
+
+---
+
+## 🧪 **Test Script: `test_securezone.py`**
+
+This script automatically tests all major API endpoints exposed by SecureZone.
+It sends GET/POST requests to the running Flask server, prints status codes, and displays formatted JSON responses.
+
+### **Endpoints tested**
+
+* `/api/status` – system status
+* `/api/run_scan` – quick & deep scans
+* `/api/alerts` – recent alerts
+* `/api/advanced_metrics` – SSL/DNS/UEBA/protocol metrics
+* `/api/detection_layers` – active security layers
+* `/api/network` – network topology graph
+
+### **How to use**
+
+Start the SecureZone server:
+
+```bash
+python app.py
+```
+
+Then run:
+
+```bash
+python test_securezone.py
+```
+
+This prints structured output for each endpoint and verifies that the system is functioning correctly.
 
 ---
 
@@ -85,7 +117,7 @@ Simulated flows include:
 * Suspicious flows (C2-like, tunneling, bot timing)
 * DGA domains
 * MITM certificate anomalies
-* Insider behaviors
+* Insider-like behaviors
 
 ### **2. Ensemble Detection Pipeline**
 
@@ -96,11 +128,9 @@ Simulated flows include:
 * Statistical thresholds
 * Rule-based heuristics
 
-An anomaly is flagged if **≥ 2 detectors agree**.
+An anomaly is flagged if **≥ 2 detectors vote anomaly**.
 
 ### **3. Multi-Layer Risk Scoring**
-
-Weighted final score:
 
 ```
 final = base_anomaly_score
@@ -115,26 +145,26 @@ final = base_anomaly_score
 ### **4. SDN-Based Response**
 
 * Apply adaptive isolation (monitor → rate-limit → strict filter → drop-all)
-* Record isolation history
-* Update topology risk map
+* Record isolation events
+* Update per-device risk in topology
 
 ---
 
 ## 📡 **API Endpoints**
 
-| Endpoint                | Description                                |
-| ----------------------- | ------------------------------------------ |
-| `/api/status`           | Full system status & dashboard data        |
-| `/api/run_scan`         | Run quick/deep scan with simulated traffic |
-| `/api/alerts`           | Recent alerts                              |
-| `/api/network`          | Network topology (nodes + edges)           |
-| `/api/advanced_metrics` | SSL/DNS/UBA/protocol metrics               |
+| Endpoint                | Description                         |
+| ----------------------- | ----------------------------------- |
+| `/api/status`           | Full system status + dashboard data |
+| `/api/run_scan`         | Run security scan (quick/deep)      |
+| `/api/alerts`           | Recent alerts                       |
+| `/api/network`          | Network topology graph              |
+| `/api/advanced_metrics` | SSL/DNS/UEBA/protocol metrics       |
 
 ---
 
 ## ▶️ **How to Run**
 
-### 1. Create virtual environment
+### **1. Create virtual environment**
 
 ```bash
 python -m venv venv
@@ -142,19 +172,19 @@ source venv/bin/activate   # Linux/macOS
 venv\Scripts\activate      # Windows
 ```
 
-### 2. Install dependencies
+### **2. Install dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Run the secure system
+### **3. Start the system**
 
 ```bash
 python app.py
 ```
 
-The dashboard will be available at:
+App will be served at:
 
 ```
 http://localhost:5000
@@ -162,35 +192,28 @@ http://localhost:5000
 
 ---
 
----
-
-## 🧪 Test Script: `test_securezone.py`
-
-This script automatically tests all major API endpoints exposed by SecureZone.  
-It sends GET/POST requests to the Flask server, prints status codes, and displays truncated JSON results for easier debugging.
-
-### **What it tests**
-- `/api/status` – full system status  
-- `/api/run_scan` – quick and deep scans  
-- `/api/alerts` – recent alerts  
-- `/api/advanced_metrics` – SSL/DNS/UEBA/protocol metrics  
-- `/api/detection_layers` – active detection layers  
-- `/api/network` – network topology graph  
-
-### **How to run**
-
-Start the server:
-```bash
-python app.py
-
-
 ## 🧩 **Notable Implementation Details**
 
-* `convert_numpy_types` ensures JSON-safe outputs
-* Modular class-based design: SSL inspector, DNS analyzer, UEBA system, etc.
-* Traffic generation supports multiple threat types
-* Ensemble detector supports drifting retraining
-* JSON responses optimized for dashboards
+* `convert_numpy_types` ensures JSON-safe output
+* Modular class-based architecture (SSL inspector, DNS analyzer, UEBA, protocol analyzer, threat intel, SDN controller)
+* Traffic generation supports diverse threat patterns
+* Ensemble detector supports retraining
+* Dashboard-ready JSON responses
+
+---
+
+## 🔮 **Future Work**
+
+SecureZone will be further expanded to move beyond simulated environments.
+Planned enhancements include:
+
+* **Integration with real-world network traffic** using packet capture (pcap), NetFlow/IPFIX collectors, or live network taps.
+* **Testing against real enterprise datasets** to benchmark detection accuracy, false positives, and performance under real load.
+* **Refining ML models using real traffic distributions**, enabling better generalization and robustness.
+* **Deploying SecureZone in a small-scale real network environment** to evaluate SDN isolation under real operational conditions.
+* **Adding support for more protocols**, richer certificate metadata, and expanded UEBA behavioral baselines.
+
+These improvements will transition SecureZone from a research prototype into a more production-capable security platform.
 
 ---
 
@@ -206,3 +229,4 @@ Not production-hardened.
 This project integrates concepts from SDN security, machine learning, threat intelligence, and network forensics research.
 
 ---
+
