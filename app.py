@@ -1,5 +1,5 @@
 """
-SecureZone Advanced: Research-Grade Network Security System
+SecureZone: Research-Grade Network Security System
 Enhanced with SSL/TLS Certificate Inspection, DNS Analysis, Protocol Fingerprinting,
 User Behavior Analytics, and Threat Intelligence Integration
 
